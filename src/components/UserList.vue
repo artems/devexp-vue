@@ -15,7 +15,7 @@
       update() {
         this.readyState = 'loading';
 
-        fetchUserList(this)
+        fetchUserList()
           .then(users => {
             this.list = users;
             this.readyState = 'loaded';
@@ -46,7 +46,7 @@
     <p v-if="readyState === 'failed'">Failed to fetch users</p>
     <ul v-if="readyState === 'loaded'">
       <li v-for="user in list">
-        <a :href="'user/' + user.login + '/'">{{user.login}}</a>
+        <a :href="'users/' + user.login + '/'">{{user.login}}</a>
         &mdash;
         <span @click.prevent="deleteUser(user.login)">[✕]</span>
       </li>

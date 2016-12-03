@@ -1,32 +1,29 @@
 <script>
   import join from 'url-join';
-  import { fetchUser } from '../actions/user';
+  import { fetchTeam } from '../actions/team';
 
   export default {
-    name: 'user-info',
+    name: 'team-info',
     data() {
       return {
-        user: {},
+        team: {},
         readyState: 'idle'
       };
     },
     methods: {
       editUrl() {
-        return join('/users', this.$route.params.id, 'edit');
+        return join('/teams', this.$route.params.id, 'edit');
       },
       handleEdit() {
         this.$router.push(this.editUrl());
-      },
-      hasContacts() {
-        return this.user.contacts && this.user.contacts.length > 0;
       }
     },
     mounted() {
       this.readyState = 'loading';
 
-      fetchUser(this.$route.params.id)
-        .then(user => {
-          this.user = user;
+      fetchTeam(this.$route.params.id)
+        .then(team => {
+          this.team = team;
           this.readyState = 'loaded';
         })
         .catch(() => {
@@ -39,13 +36,12 @@
 <template>
   <div>
     <p v-if="readyState === 'loading'">Loading...</p>
-    <p v-if="readyState === 'failed'">Failed to fetch user</p>
+    <p v-if="readyState === 'failed'">Failed to fetch team</p>
     <div v-if="readyState === 'loaded'">
       <ul>
-        <li>Name: {{user.login}}</li>
-      </ul>
-      <ul v-if="hasContacts">
-        <li v-for="item in user.contacts">{{item.id}} &mdash; {{item.account}}</li>
+        <li>Name: {{team.name}}</li>
+        <li>Approve count: {{team.reviewConfig.approveCount}}</li>
+        <li>Total reviewers: {{team.reviewConfig.totalReviewers}}</li>
       </ul>
       <button type="button" @click="handleEdit">Edit</button>
     </div>
