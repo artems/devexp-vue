@@ -8,8 +8,8 @@
   <div>
     <nav>
       <ul>
-        <li><a href="/users">Users</a></li>
-        <li><a href="/teams">Teams</a></li>
+        <li><router-link to="/users">Users</router-link></li>
+        <li><router-link to="/teams">Teams</router-link></li>
       </ul>
     </nav>
 

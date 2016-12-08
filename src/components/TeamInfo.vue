@@ -42,6 +42,12 @@
         <li>Name: {{team.name}}</li>
         <li>Approve count: {{team.reviewConfig.approveCount}}</li>
         <li>Total reviewers: {{team.reviewConfig.totalReviewers}}</li>
+        <li>
+          Patterns:
+          <ul v-if="team.patterns.length">
+            <li v-for="pattern in team.patterns">{{ pattern }}</li>
+          </ul>
+        </li>
       </ul>
       <button type="button" @click="handleEdit">Edit</button>
     </div>

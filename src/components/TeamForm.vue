@@ -9,6 +9,7 @@
         name: '',
         approveCount: '',
         totalReviewers: '',
+        patterns: [],
         error: '',
         errors: {},
         readyState: 'idle'
@@ -29,6 +30,7 @@
 
         const form = {
           name: this.name,
+          patterns: this.patterns.map(x => x.value),
           reviewConfig: {
             approveCount: this.approveCount,
             totalReviewers: this.totalReviewers
@@ -51,11 +53,15 @@
             this.errors = error.errors;
             this.readyState = 'failed';
           });
+      },
+      handleAddPattern() {
+        this.patterns.push({ value: '' });
+      },
+      handleDeletePattern(index) {
+        this.patterns.splice(index, 1);
       }
     },
     mounted() {
-      console.info(this);
-
       if (!this.id) {
         this.readyState = 'loaded';
         return;
@@ -68,6 +74,7 @@
           this.name = team.name;
           this.approveCount = team.reviewConfig.approveCount;
           this.totalReviewers = team.reviewConfig.totalReviewers;
+          this.patterns = team.patterns.map(x => { return { value: x }; });
           this.readyState = 'loaded';
         })
         .catch(() => {
@@ -93,7 +100,23 @@
         Total reviewers
         <input v-model="totalReviewers" size="25" autocomplete="off" />
       </label>
-
+      <div>
+        <h4>Patterns</h4>
+        <div v-for="(pattern, index) in patterns">
+          <input v-model="pattern.value" size="25" autocomplete="off" />
+          <button type="button" @click="handleDeletePattern(index)">
+            ✕
+          </button>
+        </div>
+        <div>
+          <button type="button" @click.prevent="handleAddPattern">
+            Add pattern
+          </button>
+        </div>
+      </div>
+      <div>
+        <h4>Steps</h4>
+      </div>
       <div><button type="submit" :disabled="isSubmitDisabled">Save</button></div>
     </form>
   </div>
