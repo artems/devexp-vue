@@ -42,3 +42,26 @@ export function fetchTeamList() {
   return fetch(ENDPOINT)
     .then(handleFetchResponse);
 }
+
+export function fetchTeamMemberList(id) {
+  return fetch(join(ENDPOINT, id, 'members'))
+    .then(handleFetchResponse);
+}
+
+export function submitMember(id, form) {
+  return fetch(join(ENDPOINT, id, 'members'), {
+    body: JSON.stringify(form),
+    method: 'POST',
+    headers: SUBMIT_HEADERS
+  })
+  .then(handleSubmitResponse);
+}
+
+export function deleteMember(id, login) {
+  return fetch(join(ENDPOINT, id, 'members'), {
+    body: JSON.stringify({ login }),
+    method: 'DELETE',
+    headers: SUBMIT_HEADERS
+  })
+  .then(handleSubmitResponse);
+}

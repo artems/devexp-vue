@@ -6,6 +6,7 @@ import TeamAdd from 'pages/TeamAdd';
 import TeamEdit from 'pages/TeamEdit';
 import TeamList from 'pages/TeamList';
 import TeamInfo from 'pages/TeamInfo';
+import TeamMemberList from 'components/TeamMemberList';
 import UserList from 'components/UserList';
 import UserInfo from 'components/UserInfo';
 import UserEdit from 'components/UserEdit';
@@ -22,6 +23,7 @@ const routes = [
       { path: 'teams/add', component: TeamAdd },
       { path: 'teams/:id', component: TeamInfo },
       { path: 'teams/:id/edit', component: TeamEdit },
+      { path: 'teams/:id/members', component: TeamMemberList },
       { path: 'users', component: UserList },
       { path: 'users/:id', component: UserInfo },
       { path: 'users/:id/edit', component: UserEdit }

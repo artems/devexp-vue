@@ -39,7 +39,7 @@ export function handleSubmitResponse(response) {
   return Promise.resolve(response)
     .then(response => Promise.all([response, response.json()]))
     .then(([response, json]) => {
-      const error = new FetchError(response);
+      const error = new FetchError();
       error.reason = reason(response);
       error.response = response;
 

@@ -34,13 +34,13 @@
 
 <template>
   <div>
-    <a href="/teams/add">Add new team</a>
+    <router-link to="/teams/add">Add new team</router-link>
     <h5>Teams:</h5>
     <p v-if="readyState === 'loading'">Loading...</p>
     <p v-if="readyState === 'failed'">Failed to fetch teams</p>
     <ul v-if="readyState === 'loaded'">
       <li v-for="team in list">
-        <a :href="'teams/' + team.name + '/'">{{team.name}}</a>
+        <router-link :to="'teams/' + team.name + '/'">{{team.name}}</router-link>
         &mdash;
         <span @click.prevent="deleteTeam(team.name)">[✕]</span>
       </li>
