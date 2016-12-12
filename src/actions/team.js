@@ -65,3 +65,17 @@ export function deleteMember(id, login) {
   })
   .then(handleSubmitResponse);
 }
+
+export function fetchDriverList() {
+  return fetch(join(endpoint('team-manager'), 'drivers'))
+    .then(handleFetchResponse);
+}
+
+export function syncTeam(team) {
+  return fetch(join(endpoint('team-manager'), 'sync-team'), {
+    body: JSON.stringify({ team }),
+    method: 'POST',
+    headers: SUBMIT_HEADERS
+  })
+  .then(handleFetchResponse);
+}

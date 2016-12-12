@@ -1,12 +1,19 @@
 <script>
   import join from 'url-join';
-  import { fetchTeam, submitTeam, updateTeam } from '../actions/team';
+  import {
+    syncTeam, fetchTeam, submitTeam, updateTeam, fetchDriverList
+  } from '../actions/team';
 
   export default {
     name: 'team-form',
     data() {
       return {
         name: '',
+        driver: {
+          name: '',
+          options: {}
+        },
+        drivers: {},
         approveCount: '',
         totalReviewers: '',
         patterns: [],
@@ -19,6 +26,9 @@
       id: String
     },
     computed: {
+      driverConfig() {
+        return this.drivers[this.driver.name] || {};
+      },
       isSubmitDisabled() {
         return this.readyState === 'submiting';
       }
@@ -30,6 +40,7 @@
 
         const form = {
           name: this.name,
+          driver: this.driver,
           patterns: this.patterns.map(x => x.value),
           reviewConfig: {
             approveCount: this.approveCount,
@@ -54,6 +65,9 @@
             this.readyState = 'failed';
           });
       },
+      handleSyncTeam() {
+        syncTeam(this.id);
+      },
       handleAddPattern() {
         this.patterns.push({ value: '' });
       },
@@ -69,9 +83,12 @@
 
       this.readyState = 'loading';
 
-      fetchTeam(this.id)
-        .then(team => {
+      Promise.all([fetchTeam(this.id), fetchDriverList()])
+        .then(([team, drivers]) => {
           this.name = team.name;
+          this.driver.name = team.driver.name || '';
+          this.driver.options = team.driver.options || {};
+          this.drivers = drivers;
           this.approveCount = team.reviewConfig.approveCount;
           this.totalReviewers = team.reviewConfig.totalReviewers;
           this.patterns = team.patterns.map(x => { return { value: x }; });
@@ -99,6 +116,18 @@
       <label>
         Total reviewers
         <input v-model="totalReviewers" size="25" autocomplete="off" />
+      </label><br />
+      <label>
+        Driver
+        <select v-model="driver.name">
+          <option v-for="(option, name) in drivers" :value="name">{{name}}</option>
+        </select><br />
+        <template v-for="(option, name) in driverConfig">
+          <label>
+            {{name}}
+            <input v-model="driver.options[name]" size="25" autocomplete="off" />
+          </label><br />
+        </template>
       </label>
       <div>
         <h4>Patterns</h4>
@@ -111,6 +140,12 @@
         <div>
           <button type="button" @click.prevent="handleAddPattern">
             Add pattern
+          </button>
+        </div>
+
+        <div v-if="this.id">
+          <button type="button" @click.prevent="handleSyncTeam">
+            Sync team
           </button>
         </div>
       </div>
