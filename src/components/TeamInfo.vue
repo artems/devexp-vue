@@ -49,7 +49,7 @@
           </ul>
         </li>
         <li>
-          <router-link to='members'>Members</router-link>
+          <router-link :to="'/teams/' + team.name + '/members'">Members</router-link>
         </li>
       </ul>
       <button type="button" @click="handleEdit">Edit</button>

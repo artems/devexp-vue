@@ -1,7 +1,9 @@
 <script>
   import join from 'url-join';
+  import draggable from 'vuedraggable';
+
   import {
-    syncTeam, fetchTeam, submitTeam, updateTeam, fetchDriverList
+    fetchTeam, submitTeam, updateTeam, fetchDriverList, fetchReviewStepList
   } from '../actions/team';
 
   export default {
@@ -13,7 +15,9 @@
           name: '',
           options: {}
         },
+        steps: [],
         drivers: {},
+        reviewSteps: [],
         approveCount: '',
         totalReviewers: '',
         patterns: [],
@@ -24,6 +28,9 @@
     },
     props: {
       id: String
+    },
+    components: {
+      draggable
     },
     computed: {
       driverConfig() {
@@ -65,9 +72,6 @@
             this.readyState = 'failed';
           });
       },
-      handleSyncTeam() {
-        syncTeam(this.id);
-      },
       handleAddPattern() {
         this.patterns.push({ value: '' });
       },
@@ -76,22 +80,34 @@
       }
     },
     mounted() {
+      this.readyState = 'loading';
+
       if (!this.id) {
-        this.readyState = 'loaded';
+        Promise.all([fetchDriverList(), fetchReviewStepList()])
+          .then(([drivers, steps]) => {
+            this.steps = Object.keys(steps);
+            this.drivers = drivers;
+            this.readyState = 'loaded';
+          })
+          .catch(() => {
+            this.readyState = 'failed';
+          });
+
         return;
       }
 
-      this.readyState = 'loading';
-
-      Promise.all([fetchTeam(this.id), fetchDriverList()])
-        .then(([team, drivers]) => {
+      Promise.all([fetchTeam(this.id), fetchDriverList(), fetchReviewStepList()])
+        .then(([team, drivers, steps]) => {
           this.name = team.name;
-          this.driver.name = team.driver.name || '';
-          this.driver.options = team.driver.options || {};
+          this.driver.name = team.driver && team.driver.name || '';
+          this.driver.options = team.driver && team.driver.options || {};
+          this.steps = Object.keys(steps);
           this.drivers = drivers;
+          this.reviewSteps = Object.keys(team.reviewConfig.steps);
           this.approveCount = team.reviewConfig.approveCount;
           this.totalReviewers = team.reviewConfig.totalReviewers;
           this.patterns = team.patterns.map(x => { return { value: x }; });
+          this.reviewSteps.push('1');
           this.readyState = 'loaded';
         })
         .catch(() => {
@@ -143,14 +159,31 @@
           </button>
         </div>
 
-        <div v-if="this.id">
-          <button type="button" @click.prevent="handleSyncTeam">
-            Sync team
-          </button>
-        </div>
       </div>
       <div>
         <h4>Steps</h4>
+        <table>
+          <tr>
+            <th>Current</th>
+            <th>Available</th>
+          </tr>
+          <tr>
+            <td>
+              <ul>
+                  <draggable :list="reviewSteps" :options="{group:{name:'steps'}}">
+                    <li v-for="(element, index) in reviewSteps" :key="index">{{element}}</li>
+                  </draggable>
+              </ul>
+            </td>
+            <td>
+                <ul>
+                  <draggable :list="steps" :options="{sort:false,group:{name:'steps',pull:'clone',put:false}}">
+                    <li v-for="(element, index) in steps" :key="index">{{element}}</li>
+                  </draggable>
+                </ul>
+            </td>
+          </tr>
+        </table>
       </div>
       <div><button type="submit" :disabled="isSubmitDisabled">Save</button></div>
     </form>

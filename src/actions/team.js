@@ -71,11 +71,8 @@ export function fetchDriverList() {
     .then(handleFetchResponse);
 }
 
-export function syncTeam(team) {
-  return fetch(join(endpoint('team-manager'), 'sync-team'), {
-    body: JSON.stringify({ team }),
-    method: 'POST',
-    headers: SUBMIT_HEADERS
-  })
-  .then(handleFetchResponse);
+export function fetchReviewStepList() {
+  return fetch(join(endpoint('review'), 'steps'))
+    .then(handleFetchResponse);
 }
+
