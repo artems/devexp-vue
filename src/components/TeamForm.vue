@@ -10,6 +10,7 @@
     name: 'team-form',
     data() {
       return {
+        team: null,
         name: '',
         driver: {
           name: '',
@@ -50,6 +51,8 @@
           driver: this.driver,
           patterns: this.patterns.map(x => x.value),
           reviewConfig: {
+            steps: this.reviewSteps,
+            stepsOptions: this.team.stepsOptions,
             approveCount: this.approveCount,
             totalReviewers: this.totalReviewers
           }
@@ -77,6 +80,9 @@
       },
       handleDeletePattern(index) {
         this.patterns.splice(index, 1);
+      },
+      deleteStep(index) {
+        this.reviewSteps.splice(index, 1);
       }
     },
     mounted() {
@@ -98,16 +104,16 @@
 
       Promise.all([fetchTeam(this.id), fetchDriverList(), fetchReviewStepList()])
         .then(([team, drivers, steps]) => {
+          this.team = team;
           this.name = team.name;
           this.driver.name = team.driver && team.driver.name || '';
           this.driver.options = team.driver && team.driver.options || {};
           this.steps = Object.keys(steps);
           this.drivers = drivers;
-          this.reviewSteps = Object.keys(team.reviewConfig.steps);
+          this.reviewSteps = team.reviewConfig.steps;
           this.approveCount = team.reviewConfig.approveCount;
           this.totalReviewers = team.reviewConfig.totalReviewers;
           this.patterns = team.patterns.map(x => { return { value: x }; });
-          this.reviewSteps.push('1');
           this.readyState = 'loaded';
         })
         .catch(() => {
@@ -169,18 +175,17 @@
           </tr>
           <tr>
             <td>
-              <ul>
-                  <draggable :list="reviewSteps" :options="{group:{name:'steps'}}">
-                    <li v-for="(element, index) in reviewSteps" :key="index">{{element}}</li>
-                  </draggable>
-              </ul>
+              <draggable element="ul" class="dropZone" :list="reviewSteps" :options="{group:{name:'steps'}}">
+                <li v-for="(element, index) in reviewSteps" :key="index">
+                  {{element}}
+                  <span @click.prevent="deleteStep(index)">[✕]</span>
+                  </li>
+              </draggable>
             </td>
             <td>
-                <ul>
-                  <draggable :list="steps" :options="{sort:false,group:{name:'steps',pull:'clone',put:false}}">
-                    <li v-for="(element, index) in steps" :key="index">{{element}}</li>
-                  </draggable>
-                </ul>
+              <draggable element="ul" :list="steps" :options="{sort:false,group:{name:'steps',pull:'clone',put:false}}">
+                <li v-for="(element, index) in steps" :key="index">{{element}}</li>
+              </draggable>
             </td>
           </tr>
         </table>
@@ -191,4 +196,13 @@
 </template>
 
 <style>
+  td
+  {
+    vertical-align: top;
+  }
+
+  .dropZone
+  {
+    min-height: 100px;
+  }
 </style>

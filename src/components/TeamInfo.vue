@@ -51,6 +51,9 @@
         <li>
           <router-link :to="'/teams/' + team.name + '/members'">Members</router-link>
         </li>
+        <li>
+          <router-link :to="'/teams/' + team.name + '/steps'">Steps</router-link>
+        </li>
       </ul>
       <button type="button" @click="handleEdit">Edit</button>
     </div>

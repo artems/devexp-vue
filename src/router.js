@@ -7,6 +7,7 @@ import TeamEdit from 'pages/TeamEdit';
 import TeamList from 'pages/TeamList';
 import TeamInfo from 'pages/TeamInfo';
 import TeamMemberList from 'components/TeamMemberList';
+import TeamReviewStepList from 'components/TeamReviewStepList';
 import UserList from 'components/UserList';
 import UserInfo from 'components/UserInfo';
 import UserEdit from 'components/UserEdit';
@@ -24,6 +25,7 @@ const routes = [
       { path: 'teams/:id', component: TeamInfo },
       { path: 'teams/:id/edit', component: TeamEdit },
       { path: 'teams/:id/members', component: TeamMemberList },
+      { path: 'teams/:id/steps', component: TeamReviewStepList },
       { path: 'users', component: UserList },
       { path: 'users/:id', component: UserInfo },
       { path: 'users/:id/edit', component: UserEdit }
