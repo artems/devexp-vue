@@ -10,7 +10,6 @@
     name: 'team-form',
     data() {
       return {
-        team: null,
         name: '',
         driver: {
           name: '',
@@ -52,7 +51,6 @@
           patterns: this.patterns.map(x => x.value),
           reviewConfig: {
             steps: this.reviewSteps,
-            stepsOptions: this.team.stepsOptions,
             approveCount: this.approveCount,
             totalReviewers: this.totalReviewers
           }
@@ -104,7 +102,6 @@
 
       Promise.all([fetchTeam(this.id), fetchDriverList(), fetchReviewStepList()])
         .then(([team, drivers, steps]) => {
-          this.team = team;
           this.name = team.name;
           this.driver.name = team.driver && team.driver.name || '';
           this.driver.options = team.driver && team.driver.options || {};
