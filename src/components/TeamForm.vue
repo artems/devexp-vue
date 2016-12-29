@@ -18,6 +18,12 @@
         steps: [],
         drivers: {},
         reviewSteps: [],
+        notification: '',
+        notifications: [
+          'mail',
+          'slack',
+          'jabber'
+        ],
         approveCount: '',
         totalReviewers: '',
         patterns: [],
@@ -52,6 +58,7 @@
           reviewConfig: {
             steps: this.reviewSteps,
             approveCount: this.approveCount,
+            notification: this.notification,
             totalReviewers: this.totalReviewers
           }
         };
@@ -109,6 +116,7 @@
           this.drivers = drivers;
           this.reviewSteps = team.reviewConfig.steps;
           this.approveCount = team.reviewConfig.approveCount;
+          this.notification = team.reviewConfig.notification;
           this.totalReviewers = team.reviewConfig.totalReviewers;
           this.patterns = team.patterns.map(x => { return { value: x }; });
           this.readyState = 'loaded';
@@ -147,6 +155,12 @@
             <input v-model="driver.options[name]" size="25" autocomplete="off" />
           </label><br />
         </template>
+      </label>
+      <label>
+        Notification
+        <select v-model="notification">
+          <option v-for="name in notifications" :value="name">{{name}}</option>
+        </select><br />
       </label>
       <div>
         <h4>Patterns</h4>

@@ -1,5 +1,5 @@
 module.exports = {
   api: {
-    prefix: 'http://localhost:8080/'
+    prefix: 'https://devexp.qloud.yandex-team.ru/'
   }
 };
