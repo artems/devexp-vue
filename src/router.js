@@ -6,6 +6,8 @@ import TeamAdd from 'pages/TeamAdd';
 import TeamEdit from 'pages/TeamEdit';
 import TeamList from 'pages/TeamList';
 import TeamInfo from 'pages/TeamInfo';
+import PullRequestList from 'pages/PullRequestList';
+
 import TeamMemberList from 'components/TeamMemberList';
 import TeamReviewStepList from 'components/TeamReviewStepList';
 import UserList from 'components/UserList';
@@ -18,8 +20,9 @@ const routes = [
   {
     path: '/',
     component: Home,
-    redirect: 'users',
+    redirect: 'pulls',
     children: [
+      { path: 'pulls', component: PullRequestList },
       { path: 'teams', component: TeamList },
       { path: 'teams/add', component: TeamAdd },
       { path: 'teams/:id', component: TeamInfo },
