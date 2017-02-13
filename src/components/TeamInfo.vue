@@ -1,6 +1,6 @@
 <script>
   import join from 'url-join';
-  import { fetchTeam } from '../actions/team';
+  import { fetchTeam, syncTeamMembers } from '../actions/team';
 
   export default {
     name: 'team-info',
@@ -16,6 +16,9 @@
       },
       handleEdit() {
         this.$router.push(this.editUrl());
+      },
+      handleSync() {
+        syncTeamMembers(this.$route.params.id);
       }
     },
     mounted() {
@@ -56,6 +59,7 @@
         </li>
       </ul>
       <button type="button" @click="handleEdit">Edit</button>
+      <button type="button" @click="handleSync">Sync</button>
     </div>
   </div>
 </template>

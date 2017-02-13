@@ -20,7 +20,7 @@
         reviewSteps: [],
         notification: '',
         notifications: [
-          'mail',
+          'email',
           'slack',
           'jabber'
         ],

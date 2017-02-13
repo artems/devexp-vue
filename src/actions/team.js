@@ -76,3 +76,11 @@ export function fetchReviewStepList() {
     .then(handleFetchResponse);
 }
 
+export function syncTeamMembers(name) {
+  return fetch(join(endpoint('team-manager'), 'sync'), {
+    body: JSON.stringify({ teamName: name }),
+    method: 'PUT',
+    headers: SUBMIT_HEADERS
+  })
+  .then(handleFetchResponse);
+}

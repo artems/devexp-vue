@@ -1,5 +1,5 @@
 module.exports = {
   api: {
-    prefix: 'http://localhost:8080/'
+    prefix: 'https://codereview.qloud.yandex-team.ru/'
   }
 };
