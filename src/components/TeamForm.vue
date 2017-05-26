@@ -20,13 +20,34 @@
         reviewSteps: [],
         notification: '',
         notifications: [
+          '',
           'email',
-          'slack',
-          'jabber'
+          'jabber',
+          'slack-rasp',
+          'slack-serp',
+          'slack-multimedia'
         ],
         approveCount: '',
         totalReviewers: '',
+        setGitHubReviewStatus: false,
+        fixReviewByAnyone: false,
+        pingReviewByAnyone: false,
+        stopReviewByAnyone: false,
+        startReviewByAnyone: false,
+        changeReviewerByAnyone: false,
         patterns: [],
+        startrek: {
+          queues: '',
+          fields: {
+            reviewers: ''
+          },
+          status: {
+            notstarted: '',
+            inprogress: '',
+            changesneeded: '',
+            complete: ''
+          }
+        },
         error: '',
         errors: {},
         readyState: 'idle'
@@ -59,9 +80,21 @@
             steps: this.reviewSteps,
             approveCount: this.approveCount,
             notification: this.notification,
-            totalReviewers: this.totalReviewers
+            totalReviewers: this.totalReviewers,
+            setGitHubReviewStatus: this.setGitHubReviewStatus,
+            fixReviewByAnyone: this.fixReviewByAnyone,
+            pingReviewByAnyone: this.pingReviewByAnyone,
+            stopReviewByAnyone: this.stopReviewByAnyone,
+            startReviewByAnyone: this.startReviewByAnyone,
+            changeReviewerByAnyone: this.changeReviewerByAnyone,
+            startrek: {
+              queues: this.startrek.queues.split(','),
+              fields: this.startrek.fields,
+              status: this.startrek.status
+            }
           }
         };
+
         let action;
         if (!this.id) {
           action = submitTeam(form);
@@ -118,6 +151,16 @@
           this.approveCount = team.reviewConfig.approveCount;
           this.notification = team.reviewConfig.notification;
           this.totalReviewers = team.reviewConfig.totalReviewers;
+          this.setGitHubReviewStatus = team.reviewConfig.setGitHubReviewStatus;
+          this.fixReviewByAnyone = team.reviewConfig.fixReviewByAnyone;
+          this.pingReviewByAnyone = team.reviewConfig.pingReviewByAnyone;
+          this.stopReviewByAnyone = team.reviewConfig.stopReviewByAnyone;
+          this.startReviewByAnyone = team.reviewConfig.startReviewByAnyone;
+          this.changeReviewerByAnyone = team.reviewConfig.changeReviewerByAnyone;
+          this.startrek.queues = (team.reviewConfig.startrek.queues || []).join(',');
+          this.startrek.fields = team.reviewConfig.startrek.fields || {};
+          this.startrek.status = team.reviewConfig.startrek.status || {};
+
           this.patterns = team.patterns.map(x => { return { value: x }; });
           this.readyState = 'loaded';
         })
@@ -143,6 +186,30 @@
       <label>
         Total reviewers
         <input v-model="totalReviewers" size="25" autocomplete="off" />
+      </label><br />
+      <label>
+        setGitHubReviewStatus
+        <input v-model="setGitHubReviewStatus" type="checkbox" />
+      </label><br />
+      <label>
+        fixReviewByAnyone
+        <input v-model="fixReviewByAnyone" type="checkbox" />
+      </label><br />
+      <label>
+        pingReviewByAnyone
+        <input v-model="pingReviewByAnyone" type="checkbox" />
+      </label><br />
+      <label>
+        stopReviewByAnyone
+        <input v-model="stopReviewByAnyone" type="checkbox" />
+      </label><br />
+      <label>
+        startReviewByAnyone
+        <input v-model="startReviewByAnyone" type="checkbox" />
+      </label><br />
+      <label>
+        changeReviewerByAnyone
+        <input v-model="changeReviewerByAnyone" type="checkbox" />
       </label><br />
       <label>
         Driver
@@ -175,7 +242,33 @@
             Add pattern
           </button>
         </div>
-
+      </div>
+      <div>
+        <h4>Startrek</h4>
+        <label>
+          queues
+          <input v-model="startrek.queues" type="text" />
+        </label><br />
+        <label>
+          fields.reviewers
+          <input v-model="startrek.fields.reviewers" type="text" />
+        </label><br />
+        <label>
+          status.notstarted
+          <input v-model="startrek.status.notstarted" type="text" />
+        </label><br />
+        <label>
+          status.inprogress
+          <input v-model="startrek.status.inprogress" type="text" />
+        </label><br />
+        <label>
+          status.changesneeded
+          <input v-model="startrek.status.changesneeded" type="text" />
+        </label><br />
+        <label>
+          status.complete
+          <input v-model="startrek.status.complete" type="text" />
+        </label><br />
       </div>
       <div>
         <h4>Steps</h4>

@@ -64,6 +64,7 @@
         <select v-model="contact.id">
           <option value="email">email</option>
           <option value="jabber">jabber</option>
+          <option value="telegram">telegram</option>
         </select>
         <input size="25" name="account" v-model="contact.account" autocomplete="off" />
         <button type="button" @click="handleDeleteContact(index)">
