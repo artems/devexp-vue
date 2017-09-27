@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <team-form :id="$route.params.id">
+  <team-form :id="$route.params.id" />
 </template>

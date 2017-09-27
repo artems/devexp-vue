@@ -17,8 +17,6 @@
 <style>
 .nav
 {
-  font-size: .8em;
-  font-family: sans-serif;
 }
 
 .nav__list
@@ -48,5 +46,4 @@
 
   background-color: rgb(66, 87, 106);
 }
-
 </style>

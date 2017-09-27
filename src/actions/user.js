@@ -38,7 +38,7 @@ export function deleteUser(id) {
   .then(handleFetchResponse);
 }
 
-export function fetchUserList() {
-  return fetch(ENDPOINT)
+export function fetchUserList(skip, limit) {
+  return fetch(ENDPOINT + '?skip=' + skip + '&limit=' + limit)
     .then(handleFetchResponse);
 }

@@ -8,11 +8,11 @@ import TeamList from 'pages/TeamList';
 import TeamInfo from 'pages/TeamInfo';
 import PullRequestList from 'pages/PullRequestList';
 
-import TeamMemberList from 'components/TeamMemberList';
-import TeamReviewStepList from 'components/TeamReviewStepList';
 import UserList from 'components/UserList';
 import UserInfo from 'components/UserInfo';
 import UserEdit from 'components/UserEdit';
+import TeamMemberList from 'components/TeamMemberList';
+import TeamReviewStepList from 'components/TeamReviewStepList';
 
 Vue.use(VueRouter);
 
@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/',
     component: Home,
-    redirect: 'pulls',
+    redirect: 'teams',
     children: [
       { path: 'pulls', component: PullRequestList },
       { path: 'teams', component: TeamList },
@@ -36,6 +36,4 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({ mode: 'history', routes });
-
-export default router;
+export default new VueRouter({ mode: 'history', routes });

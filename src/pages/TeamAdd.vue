@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <team-form id="">
+  <team-form id="" />
 </template>

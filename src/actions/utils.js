@@ -1,7 +1,8 @@
 import join from 'url-join';
-import config from '../config/';
 
 export class FetchError extends Error {}
+
+const API_HOST = process.env.MAIN_API.prefix;
 
 export const SUBMIT_HEADERS = {
   Accept: 'application/json',
@@ -9,7 +10,7 @@ export const SUBMIT_HEADERS = {
 };
 
 export function endpoint(path) {
-  return join(config.api.prefix, path);
+  return join(API_HOST, path);
 }
 
 export function reason(response) {

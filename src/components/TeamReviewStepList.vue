@@ -27,7 +27,7 @@
         Promise.all([fetchTeam(this.id), fetchReviewStepList()])
           .then(([team, steps]) => {
             this.team = team;
-            this.steps = steps;
+            this.steps = steps.allSteps;
             this.stepsOptions = this.steps2string(team.reviewConfig.stepsOptions) || {};
             this.readyState = 'loaded';
           })

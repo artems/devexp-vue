@@ -17,7 +17,7 @@
   <div :class="baseClass">
     <img class="user-avatar__image" :src="user.avatar_url" />
     <span class="user-avatar__login">{{user.login}}</span>
-  <div>
+  </div>
 </template>
 
 <style>
